@@ -1,7 +1,17 @@
 package directory;
 
 public enum ResultadoEnum {
-    GANADOR,
-    PERDEDOR,
-    EMPATE
+    GANADOR("GANADOR"),
+    PERDEDOR("PERDEDOR"),
+    EMPATE("EMPATE");
+
+    private String value;
+
+    ResultadoEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return this.value;
+    }
 }
