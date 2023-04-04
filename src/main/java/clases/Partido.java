@@ -1,7 +1,7 @@
 package clases;
 
-import directory.Constants;
-import directory.ResultadoEnum;
+import enums.Constants;
+import enums.ResultadoEnum;
 
 import java.io.File;
 import java.io.IOException;

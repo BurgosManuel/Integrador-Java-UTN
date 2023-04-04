@@ -1,4 +1,4 @@
-package directory;
+package enums;
 
 public class Constants {
     // Definimos constantes para los for loops que usamos en la clase Partido.

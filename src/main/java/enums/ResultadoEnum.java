@@ -1,4 +1,4 @@
-package directory;
+package enums;
 
 public enum ResultadoEnum {
     GANADOR("GANADOR"),
