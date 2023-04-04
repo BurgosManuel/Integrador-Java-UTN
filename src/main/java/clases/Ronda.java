@@ -1,10 +1,12 @@
 package clases;
 
+import java.util.List;
+
 public class Ronda {
     private String nro;
-    private Partido[] partidos;
+    private List<Partido> partidos;
 
-    public Ronda(String nro, Partido[] partidos) {
+    public Ronda(String nro, List<Partido> partidos) {
         this.nro = nro;
         this.partidos = partidos;
     }
@@ -22,11 +24,11 @@ public class Ronda {
         this.nro = nro;
     }
 
-    public Partido[] getPartidos() {
+    public List<Partido> getPartidos() {
         return partidos;
     }
 
-    public void setPartidos(Partido[] partidos) {
+    public void setPartidos(List<Partido> partidos) {
         this.partidos = partidos;
     }
 }
