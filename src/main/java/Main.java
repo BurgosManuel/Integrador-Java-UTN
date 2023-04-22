@@ -1,7 +1,10 @@
 import clases.Partido;
+import clases.Pronostico;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Main {
@@ -17,15 +20,17 @@ public class Main {
 
 
         // Seteamos los absolute paths en las variables.
-        String partidosPath =  "E:\\Coding\\Cursos\\Argentina Programa 4.0 - UTN Java\\Trabajo Integrador\\Proyecto\\Proyecto Integrador - Java UTN\\src\\main\\resources\\partidos.csv";
-        String pronosticosPath =  "E:\\Coding\\Cursos\\Argentina Programa 4.0 - UTN Java\\Trabajo Integrador\\Proyecto\\Proyecto Integrador - Java UTN\\src\\main\\resources\\pronostico.csv";
+        Path partidosPath = Paths.get("src\\main\\resources\\partidos.csv").toAbsolutePath();
+        Path pronosticosPath =  Paths.get("src\\main\\resources\\pronostico.csv").toAbsolutePath();
 
         // Creamos variables de tipo File a partir de los paths.
-        File resultadoFile = new File(partidosPath);
-        File pronosticoFile = new File(pronosticosPath);
+        File resultadoFile = new File(partidosPath.toUri());
+        File pronosticoFile = new File(pronosticosPath.toUri());
 
         // Obtenemos la lista de partidos a partir del archivo partidos.csv
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
+
+        List<Pronostico> listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
 
         // Imprimimos por pantalla el valor de las instancias del objeto Partido
         for(Partido p : listPartidos) {
