@@ -74,35 +74,42 @@ public class Main {
 
         System.out.println("============ LOS PUNTAJES SON: ============");
         for(String nombre : setNombres) {
-            int puntajeJugador = listPronostico.stream()
-                    .filter(pronostico -> pronostico.getNombreJugador().equals(nombre)) // Obtenemos los pronosticos que correspondan al nombre del jugador
-                    .map(pro -> { // Obtneemos el puntaje del jugador
-                        int puntaje = 0;
-                        try {
-                            int puntosObtenidos = pro.puntos();
-                            puntaje += puntosObtenidos;
-                            if(puntosObtenidos > 0) {
-                                for(Ronda ronda: listRondas) {
-                                    // Agregamos un acierto a la ronda cuando obtenemos un puntaje.
-                                    if(Integer.valueOf(ronda.getNro()).equals(pro.getPartido().getNroRonda())) {
-                                        ronda.setAciertos(ronda.getAciertos() +1);
-                                    }
+            int puntaje = 0;
+            for(Pronostico pronostico : listPronostico) {
+                if(pronostico.getNombreJugador().equals(nombre)) {
+                    try {
+                        int puntosObtenidos = pronostico.puntos();
+                        puntaje += puntosObtenidos;
+                        if(puntosObtenidos > 0) {
+                            for(Ronda ronda: listRondas) {
+                                // Agregamos un acierto a la ronda cuando obtenemos un puntaje.
+                                if(Integer.valueOf(ronda.getNro()).equals(pronostico.getPartido().getNroRonda())) {
+                                    ronda.setAciertos(ronda.getAciertos() +1);
                                 }
                             }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
                         }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
 
-                        return puntaje;
-                    }).reduce(0, (x,y) -> x+y); // Usamos reduce para sumar el puntaje total
             // Revisamos la cantidad de rondas acertadas y multiplicamos el valor extra * cantidad de rondas.
-            int cantidadRondasAcertadas= listRondas.stream().filter(r -> r.getAciertos() == r.getPartidos().size()).collect(Collectors.toList()).size();
+            int cantidadAciertos = 0;
+            int cantidadRondasAcertadas = 0;
+            for(Ronda ronda : listRondas) {
+                cantidadAciertos += ronda.getAciertos();
+                if(ronda.getAciertos() == ronda.getPartidos().size()) {
+                    cantidadRondasAcertadas++;
+                }
+            }
+
             if(cantidadRondasAcertadas > 0) {
-                puntajeJugador += Constants.VALOR_EXTRA_RONDAS * cantidadRondasAcertadas;
+                puntaje += Constants.VALOR_EXTRA_RONDAS * cantidadRondasAcertadas;
             }
             listRondas.stream().forEach(r -> r.setAciertos(0));
 
-            System.out.println(nombre + ": " + puntajeJugador); // Imprimimos el nombre y puntaje por consola.
+            System.out.println(nombre + ": " + "PUNTOS: " + puntaje + " CANTIDAD ACIERTOS: " + cantidadAciertos + " RONDAS COMPLETAS: " + cantidadRondasAcertadas); // Imprimimos el nombre y puntaje por consola.
         }
     }
 }
