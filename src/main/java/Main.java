@@ -37,9 +37,13 @@ public class Main {
             System.out.println(p.toString());
         }
 
+        int puntaje = 0;
         // Imprimimos por pantalla el valor de las instancias del objeto Pronostico.
         for(Pronostico pro : listPronostico) {
             System.out.println(pro.toString());
+            puntaje += pro.puntos();
         }
+
+        System.out.println("============ EL PUNTAJE FINAL ES ->>> " + puntaje + " <<<- ============");
     }
 }
