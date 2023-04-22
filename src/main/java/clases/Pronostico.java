@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Pronostico {
     private Partido partido;
@@ -98,9 +99,15 @@ public class Pronostico {
 
                     Pronostico pronosticoResult = new Pronostico(partido, equipoSeleccionado, resultado);
 
-                    listPronosticos.add(pronosticoResult);
+                    if(Objects.nonNull(pronosticoResult)){
+                        listPronosticos.add(pronosticoResult);
+                    }
 
                 }
+            }
+
+            if(listPronosticos.isEmpty()) {
+                throw new IOException("No se pudo obtener la lista de pronosticos a partir del archivo utilizado.");
             }
 
         return  listPronosticos;
