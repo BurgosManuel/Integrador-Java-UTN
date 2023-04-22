@@ -9,18 +9,21 @@ import java.nio.file.Files;
 import java.util.*;
 
 public class Partido {
+    private int nroRonda;
     private Equipo equipo1;
     private int golesEquipo1;
     private Equipo equipo2;
     private int golesEquipo2;
     private final int CONST_CANTIDAD_DATOS_PARTIDO = 4;
 
-    public Partido(Equipo equipo1, int golesEquipo1, Equipo equipo2, int golesEquipo2) {
+    public Partido(Equipo equipo1, int golesEquipo1, Equipo equipo2, int golesEquipo2, int nroRonda) {
         this.equipo1 = equipo1;
         this.golesEquipo1 = golesEquipo1;
 
         this.equipo2 = equipo2;
         this.golesEquipo2 = golesEquipo2;
+
+        this.nroRonda = nroRonda;
     }
 
     public Partido() {
@@ -30,12 +33,17 @@ public class Partido {
     public static List<Partido> buildListPartidosFromFile(File resultadosFile) throws IOException {
         List<String> resultadosLines = Files.readAllLines(resultadosFile.toPath());
 
-        List<Integer> listaResultadosGoles = new ArrayList<>();
+        List<Integer> listRondas = new ArrayList<>();
+        List<Integer> listGolesEquipos = new ArrayList<>();
         List<String> listaResultadosEquipos = new ArrayList<>();
+
 
         for(String resultadoLine : resultadosLines) {
             // Separamos los datos de equipo y goles con coma por cada linea.
-            String[] resultadoSplit = resultadoLine.split(",");
+            String[] resultadoSplit = resultadoLine.split(";");
+
+            // Usamos cantidadRondas para setear el primer int a la lista de Rondas;
+            int cantidadRondas = 0;
 
             // Obtenemos los datos a partir del array "spliteado"
             for(String splitDato : resultadoSplit) {
@@ -44,7 +52,14 @@ public class Partido {
                 // Aprovechamos la Excepción del parseInt para diferenciar Goles de Equipos.
                 try{
                     splitInt = Integer.parseInt(splitDato);
-                    listaResultadosGoles.add(Integer.valueOf(splitInt));
+                    // Si obtenemos un int y no hay rondas, lo agregamos a listRondas.
+                    if(cantidadRondas == 0) {
+                        listRondas.add(Integer.valueOf(splitInt));
+                        cantidadRondas++;
+                    } else {
+                        listGolesEquipos.add(Integer.valueOf(splitInt));
+                    }
+
                 } catch (NumberFormatException e) {
                     splitEquipo = splitDato;
                     listaResultadosEquipos.add(splitEquipo);
@@ -56,12 +71,15 @@ public class Partido {
 
         for (int i = 0; i < listaResultadosEquipos.size(); i += Constants.CONST_AUMENTO_INDICE_PARTIDOS) {
             Equipo equipo1 = new Equipo(listaResultadosEquipos.get(i));
-            int golesEquipo1 = listaResultadosGoles.get(i);
+            int golesEquipo1 = listGolesEquipos.get(i);
 
             Equipo equipo2= new Equipo(listaResultadosEquipos.get(i+1));
-            int golesEquipo2 = listaResultadosGoles.get(i+1);
+            int golesEquipo2 = listGolesEquipos.get(i+1);
 
-            Partido partidoResultado = new Partido(equipo1, golesEquipo1, equipo2, golesEquipo2);
+            // Cada partido tiene 2 equipos y 2 goles, pero 1 ronda, por lo que siempre dividimos en 2 el indice para obtener la ronda correcta.
+            int nroRonda = listRondas.get(i > 0 ? i / 2 : i);
+
+            Partido partidoResultado = new Partido(equipo1, golesEquipo1, equipo2, golesEquipo2, nroRonda);
 
             if(Objects.nonNull(partidoResultado)) {
                 listPartidos.add(partidoResultado);
@@ -130,6 +148,14 @@ public class Partido {
 
     public void setGolesEquipo2(int golesEquipo2) {
         this.golesEquipo2 = golesEquipo2;
+    }
+
+    public int getNroRonda() {
+        return nroRonda;
+    }
+
+    public void setNroRonda(int nroRonda) {
+        this.nroRonda = nroRonda;
     }
 
     @Override
