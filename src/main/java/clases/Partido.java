@@ -161,7 +161,8 @@ public class Partido {
     @Override
     public String toString() {
         return "Partido{" +
-                "equipo1=" + equipo1.toString() +
+                "nroRonda=" + this.getNroRonda() +
+                ", equipo1=" + equipo1.toString() +
                 ", equipo2=" + equipo2.toString() +
                 ", golesEquipo1=" + golesEquipo1 +
                 ", golesEquipo2=" + golesEquipo2 +

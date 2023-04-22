@@ -148,7 +148,7 @@ public class Pronostico {
     public static int obtenerIndicePartidoPorPosX(int posicionX) {
         // 3 posiciones de X == 1 partido. Vamos restando de a 3 posiciones para encontrar el lugar de cada partido.
         int indicePartido = 0;
-        while (posicionX - 3 >= indicePartido) {
+        while (posicionX - 3 >= indicePartido && posicionX > 3) {
             posicionX -= 3;
             indicePartido++;
         }
@@ -198,11 +198,16 @@ public class Pronostico {
 
     @Override
     public String toString() {
-        return "Pronostico{" +
-                "equipo=" + this.getEquipo().toString() +
-                ", resultado=" + this.getResultado().getValue() +
-                ", nombreJugador=" + this.getNombreJugador() +
-                ", partido=" + this.getPartido().toString() +
-                '}';
+        try {
+            return "Pronostico{" +
+                    "puntos=" + this.puntos() +
+                    ", equipo=" + this.getEquipo().toString() +
+                    ", resultado=" + this.getResultado().getValue() +
+                    ", nombreJugador=" + this.getNombreJugador() +
+                    ", partido=" + this.getPartido().toString() +
+                    '}';
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
