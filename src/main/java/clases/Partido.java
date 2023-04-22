@@ -34,7 +34,6 @@ public class Partido {
         List<String> listaResultadosEquipos = new ArrayList<>();
 
         for(String resultadoLine : resultadosLines) {
-            System.out.println(resultadoLine);
             // Separamos los datos de equipo y goles con coma por cada linea.
             String[] resultadoSplit = resultadoLine.split(",");
 

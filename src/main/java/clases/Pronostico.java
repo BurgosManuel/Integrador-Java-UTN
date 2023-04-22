@@ -36,7 +36,6 @@ public class Pronostico {
         List<String> listPosicionX = new ArrayList<>();
 
         for(String pronosticoLine : pronosticoLines) {
-            System.out.println(pronosticoLine);
             // Separamos los datos con coma por cada linea.
             String[] resultadoSplit = pronosticoLine.split(",");
             // Obtenemos los datos a partir del array "spliteado"
