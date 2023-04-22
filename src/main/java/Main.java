@@ -76,7 +76,7 @@ public class Main {
         for(String nombre : setNombres) {
             int puntaje = 0;
             for(Pronostico pronostico : listPronostico) {
-                if(pronostico.getNombreJugador().equals(nombre)) {
+                if(pronostico.getNombreJugador().equalsIgnoreCase(nombre)) {
                     try {
                         int puntosObtenidos = pronostico.puntos();
                         puntaje += puntosObtenidos;
