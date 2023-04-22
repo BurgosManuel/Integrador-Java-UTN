@@ -11,11 +11,6 @@ public class Ronda {
         this.partidos = partidos;
     }
 
-    public int puntos() {
-        //TODO: Implementar.
-        return 0;
-    }
-
     public String getNro() {
         return nro;
     }
