@@ -32,9 +32,14 @@ public class Main {
 
         List<Pronostico> listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
 
-        // Imprimimos por pantalla el valor de las instancias del objeto Partido
+        // Imprimimos por pantalla el valor de las instancias del objeto Partido.
         for(Partido p : listPartidos) {
             System.out.println(p.toString());
+        }
+
+        // Imprimimos por pantalla el valor de las instancias del objeto Pronostico.
+        for(Pronostico pro : listPronostico) {
+            System.out.println(pro.toString());
         }
     }
 }
