@@ -33,11 +33,6 @@ public class Main {
 
         List<Pronostico> listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
 
-        // Armamos un set para no tener repetidos los nombres.
-        Set<String> setNombres = new HashSet<>(listPronostico.stream()
-                .map(pronostico -> pronostico.getNombreJugador())
-                .collect(Collectors.toList()));
-
         // Imprimimos por pantalla el valor de las instancias del objeto Partido.
         System.out.println("========== PARTIDOS =========");
         for(Partido p : listPartidos) {
@@ -49,6 +44,12 @@ public class Main {
         for(Pronostico pro : listPronostico) {
             System.out.println(pro.toString());
         }
+
+        // Armamos un set para no tener repetidos los nombres.
+        Set<String> setNombres = new HashSet<>(listPronostico.stream()
+                .map(pronostico -> pronostico.getNombreJugador())
+                .collect(Collectors.toList()));
+
 
         System.out.println("============ LOS PUNTAJES SON: ============");
         for(String nombre : setNombres) {
