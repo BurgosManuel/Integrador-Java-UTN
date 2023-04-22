@@ -77,9 +77,28 @@ public class Partido {
     }
 
 
-    public ResultadoEnum resultado(Equipo equipo) {
-        //TODO: Implementar.
-        return null;
+    public ResultadoEnum resultado(Equipo equipo) throws IOException {
+        // Validamos que el equipo usado como parámetro corresponda a este partido
+        if(equipo != this.equipo1 && equipo != this.equipo2) {
+            throw new IOException("El equipo ingresado no corresponde a este partido");
+        }
+
+        // Inicializamos un equipoGanador
+        Equipo equipoGanador = null;
+
+        // Definimos el equipoGanador basandonos en la cantidad de goles
+        if(this.golesEquipo1 > this.golesEquipo2) {
+            equipoGanador = this.equipo1;
+        } else if(this.golesEquipo1 < this.golesEquipo2)  {
+            equipoGanador = this.equipo2;
+        }
+
+        // Si equipoGanador fue seteado significa que tenemos un ganador, caso contrario, es un empate.
+        if(equipoGanador != null) {
+            return equipoGanador == equipo ? ResultadoEnum.GANADOR : ResultadoEnum.PERDEDOR;
+        } else {
+            return ResultadoEnum.EMPATE;
+        }
     }
 
     public Equipo getEquipo1() {
