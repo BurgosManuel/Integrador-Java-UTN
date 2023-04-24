@@ -1,5 +1,7 @@
 package db;
 
+import clases.Configuracion;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -38,6 +40,15 @@ public class DBManager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void updateDataByConfiguration(Configuracion config) {
+		if(Objects.nonNull(config)) {
+			this.DB_NAME = config.getDbName();
+			this.DB_URL = config.getDbUrl();
+			this.DB_USERNAME = config.getUsername();
+			this.DB_PASSWORD = config.getPassword();
 		}
 	}
 
