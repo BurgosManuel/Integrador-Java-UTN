@@ -58,25 +58,25 @@ public class Pronostico {
  	        pronosticoLines = Files.readAllLines(URL.toPath());
         }else {
         
-        try {
-    			conexion=DBManager.getInstance().conexion(pronosticoFile);
-    			String sql="select p.nombre,a.equipo1,a.ganaEquipo1,a.empate,a.ganaEquipo2,a.equipo2 From Personas As p, Apuestas as a where p.idPersona=A.idPersona;";
-    			PreparedStatement query = conexion.prepareStatement(sql);
-    			ResultSet resulSet = query.executeQuery();
-    			while(resulSet.next()) {
-    				pronosticoLines.add(resulSet.getString("nombre")+";"+resulSet.getString("equipo1")+";"+resulSet.getString("ganaEquipo1")+";"+resulSet.getString("Empate")+";"+resulSet.getString("ganaEquipo2")+";"+resulSet.getString("equipo2"));
-    			
-    			}
-    	}catch(SQLException a){
-    		a.printStackTrace();
-    	}finally{
-    		try {
-				conexion.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
+	        try {
+	    			conexion=DBManager.getInstance().conexion(pronosticoFile);
+	    			String sql="select p.nombre,a.equipo1,a.ganaEquipo1,a.empate,a.ganaEquipo2,a.equipo2 From Personas As p, Apuestas as a where p.idPersona=A.idPersona;";
+	    			PreparedStatement query = conexion.prepareStatement(sql);
+	    			ResultSet resulSet = query.executeQuery();
+	    			while(resulSet.next()) {
+	    				pronosticoLines.add(resulSet.getString("nombre")+";"+resulSet.getString("equipo1")+";"+resulSet.getString("ganaEquipo1")+";"+resulSet.getString("Empate")+";"+resulSet.getString("ganaEquipo2")+";"+resulSet.getString("equipo2"));
+	    			
+	    			}
+	    	}catch(SQLException a){
+	    		a.printStackTrace();
+	    	}finally{
+	    		try {
+					conexion.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
         }
     	
         
@@ -99,7 +99,7 @@ public class Pronostico {
                     listPosicionX.add(splitDato);
                 } else {
                     // Si el dato encontrado no es un nombre de equipo, se agrega a la lista de jugadores.
-                    if(!nombresDeEquipo.contains(splitDato)) {
+                    if(! nombresDeEquipo.contains(splitDato)) {
                         listNombreJugador.add(splitDato);
                     }
                 }
