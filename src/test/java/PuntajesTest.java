@@ -19,7 +19,7 @@ public class PuntajesTest {
 	private List<Partido> resulPartidos,resulPartidos2;
 	private List<Pronostico> resulPronosticos,resulPronosticos2;
 	private List<Puntajes> pts, pts2;
-	
+
 	@BeforeEach
 	public void setup() throws IOException, SQLException {
 		Path arch= Paths.get(new File ("src\\test\\resources\\PartidosTest.csv").getAbsolutePath()); 
@@ -32,15 +32,24 @@ public class PuntajesTest {
 	
 	
 	@DisplayName ("Puntaje de una persona en 2 rondas consecutivas")
+<<<<<<< HEAD
 	@Test 
 	public void Test1() throws IOException {
 		int esperado=7;		
 		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
 		
+=======
+	@Test
+	public void Test1() throws IOException {
+		int esperado=7;
+		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
+
+>>>>>>> 912c7453c42afcf4f462ac620fc5c5c035ebd76b
 		for(Puntajes puntos: pts) {
 			Assertions.assertEquals(esperado,puntos.getPts());
 		}
 	}
+<<<<<<< HEAD
 	
 	@DisplayName ("Nombre de persona correcto")
 	@Test
@@ -48,6 +57,15 @@ public class PuntajesTest {
 		String esperado="MARIANA";		
 		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
 		
+=======
+
+	@DisplayName ("Nombre de persona correcto")
+	@Test
+	public void test2()throws IOException{
+		String esperado="MARIANA";
+		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
+
+>>>>>>> 912c7453c42afcf4f462ac620fc5c5c035ebd76b
 		for(Puntajes puntos: pts) {
 			Assertions.assertEquals(esperado,puntos.getNombre());
 		}
@@ -55,7 +73,11 @@ public class PuntajesTest {
 	
 	@DisplayName ("Probando la suma del extra por fase")
 	@Test
+<<<<<<< HEAD
 	public void test3()throws IOException, SQLException{
+=======
+	public void test3()throws IOException{
+>>>>>>> 912c7453c42afcf4f462ac620fc5c5c035ebd76b
 		int esperado=16;
 		
 		Path arch3= Paths.get(new File ("src\\test\\resources\\PartidosTest2.csv").getAbsolutePath());
