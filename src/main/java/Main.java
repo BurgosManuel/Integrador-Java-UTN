@@ -23,8 +23,10 @@ public class Main {
 
 
         // Seteamos los absolute paths en las variables.
-        Path partidosPath = Paths.get("src\\main\\resources\\partidos.csv").toAbsolutePath();
-        Path pronosticosPath =  Paths.get("src\\main\\resources\\pronostico.csv").toAbsolutePath();
+        Path partidosPath = Paths.get(args[0]).toAbsolutePath();
+        //Path configurationFile = Paths.get(args[1]).toAbsolutePath();
+
+        Path pronosticosPath =  Paths.get(args[1]).toAbsolutePath();
 
         // Creamos variables de tipo File a partir de los paths.
         File resultadoFile = new File(partidosPath.toUri());
@@ -32,8 +34,12 @@ public class Main {
 
         // Obtenemos la lista de partidos a partir del archivo partidos.csv
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
+        List<Pronostico> listPronostico = Pronostico.buildListPronosticoFromDB(listPartidos);
 
-        List<Pronostico> listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
+        //TODO: Crear tabla con JDBC
+
+       // List<Pronostico> listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
+
 
         // Imprimimos por pantalla el valor de las instancias del objeto Partido.
         System.out.println("========== PARTIDOS =========");
