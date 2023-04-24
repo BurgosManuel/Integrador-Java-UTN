@@ -5,11 +5,19 @@ import enums.ResultadoEnum;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import BaseDeDatos.DBManager;
 
 public class Pronostico {
     private Partido partido;
@@ -34,15 +42,42 @@ public class Pronostico {
         return puntaje;
     }
 
-    public static List<Pronostico> buildListPronostico(File pronosticoFile, List<Partido> listPartidos) throws IOException {
-        List<String> pronosticoLines = Files.readAllLines(pronosticoFile.toPath());
-
-        // Armamos una list que contenga las X y los espacios Vacios-
+    public static List<Pronostico> buildListPronostico(String pronosticoFile, List<Partido> listPartidos) throws IOException, SQLException {
+    	// Armamos una list que contenga las X y los espacios Vacios-
         // Tambien armamos una lista para los nombres de los jugadores.
         List<String> listPosicionX = new ArrayList<>();
         List<String> listNombreJugador = new ArrayList<>();
         List<String> nombresDeEquipo = new ArrayList<>();
-
+        List<String> pronosticoLines = new ArrayList<>();
+        Connection conexion=null;
+        if(!pronosticoFile.contains("csv")){
+        	conexion=DBManager.getInstance().conexion(pronosticoFile);
+        }
+    	try {
+    		if(conexion!=null) {
+    			String sql="select p.nombre,a.equipo1,a.ganaEquipo1,a.empate,a.ganaEquipo2,a.equipo2 From Personas As p, Apuestas as a where p.idPersona=A.idPersona;";
+    			PreparedStatement query = conexion.prepareStatement(sql);
+    			ResultSet resulSet = query.executeQuery();
+    			while(resulSet.next()) {
+    				pronosticoLines.add(resulSet.getString("nombre")+";"+resulSet.getString("equipo1")+";"+resulSet.getString("ganaEquipo1")+";"+resulSet.getString("Empate")+";"+resulSet.getString("ganaEquipo2")+";"+resulSet.getString("equipo2"));
+    			}
+    			}
+    	}catch(SQLException a){
+    		Path pronosticosPath =  Paths.get(pronosticoFile).toAbsolutePath();
+ 	        // Creamos variables de tipo File a partir de los paths.
+ 	        File URL = new File(pronosticosPath.toUri());
+ 	        pronosticoLines = Files.readAllLines(URL.toPath());
+    	}finally{
+    		try {
+				conexion.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	
+    	
+        
         // Obtenemos todos los nombres de equipo para diferenciar
         if(Objects.nonNull(listPartidos) && !listPartidos.isEmpty()) {
              nombresDeEquipo = listPartidos.stream()
@@ -52,7 +87,7 @@ public class Pronostico {
             throw new IOException("La lista de partidos esta vacio o es nula.");
         }
 
-
+       
         for(String pronosticoLine : pronosticoLines) {
             // Separamos los datos con coma por cada linea.
             String[] resultadoSplit = pronosticoLine.split(";");
