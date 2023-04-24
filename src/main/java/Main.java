@@ -25,6 +25,7 @@ public class Main {
         //System.out.println("Ingresa la ubicación del archivo \"pronostico.csv\"");
         //String pronosticoPath = scanner.nextLine();
 
+        System.out.println("Iniciado programa...");
 
         // Seteamos los absolute paths en las variables.
         Path partidosPath = Paths.get(args[0]).toAbsolutePath();
@@ -33,14 +34,19 @@ public class Main {
         File resultadoFile = new File(partidosPath.toUri());
 
         // Obtenemos la lista de partidos a partir del archivo partidos.csv
+        System.out.println("Obteniendo partidos...");
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
+
+        System.out.println("¡Partidos obtenidos!");
         List<Pronostico> listPronostico;
 
         // Instanciamos un puntaje de utilidad para configurar los puntos y obtener la lista de puntajes al final.
         Puntaje puntajeUtilidad = new Puntaje();
 
         // Validamos si el segundo argumento es un archivo .csv o es un archivo de configuración, en base a eso obtenemos la lista de pronósticos.
-    	if(args[1].contains(".csv")) {
+        System.out.println("Obteniendo pronósticos...");
+
+        if(args[1].contains(".csv")) {
             // Obtenemos el .csv de pronosticos
             Path pronosticosPath =  Paths.get(args[1]).toAbsolutePath();
             File pronosticoFile = new File(pronosticosPath.toUri());
@@ -68,6 +74,7 @@ public class Main {
     	} else {
             throw new RuntimeException("No se encontró un archivo de pronosticos o configuración válido.");
         }
+        System.out.println("¡Pronosticos obtenidos!");
     	
         /*
         // Imprimimos por pantalla el valor de las instancias del objeto Partido.
@@ -84,17 +91,19 @@ public class Main {
         }
          */
 
+        System.out.println("Calculando puntuación de los jugadores...");
         List<Puntaje> puntos = puntajeUtilidad.puntos(listPartidos, listPronostico);
         // Ordenamos la lista por puntajes de mayor a menor
         Collections.sort(puntos, (o1, o2) -> Integer.valueOf(o2.getPts()).compareTo(Integer.valueOf(o1.getPts())));
+        System.out.println("¡Puntaje calculado con éxito!");
         
         
         System.out.println("============ LOS PUNTAJES SON: ============");
         int posicion = 1;
         for(Puntaje pts:puntos) {
-        	System.out.println("PUESTO: #" + posicion+ " NOMBRE:"+pts.getNombre()+"\tPUNTOS:"+pts.getPts()+"\tCANTIDAD ACIERTOS: " + pts.getCantidadAciertos() + "\tRONDAS COMPLETAS: " + pts.getCantidadRondasAcertadas() + "\tFASES COMPLETAS: " + pts.getCantidadFasesAcertadas());
+        	System.out.println("PUESTO: #" + posicion+ " NOMBRE: "+pts.getNombre()+" PUNTOS: "+pts.getPts()+" CANTIDAD ACIERTOS: " + pts.getCantidadAciertos() + " RONDAS COMPLETAS: " + pts.getCantidadRondasAcertadas() + " FASES COMPLETAS: " + pts.getCantidadFasesAcertadas());
             posicion++;
         }
-        
+        System.out.println("===========================================");
     }
 }
