@@ -85,11 +85,15 @@ public class Main {
          */
 
         List<Puntaje> puntos = puntajeUtilidad.puntos(listPartidos, listPronostico);
+        // Ordenamos la lista por puntajes de mayor a menor
+        Collections.sort(puntos, (o1, o2) -> Integer.valueOf(o2.getPts()).compareTo(Integer.valueOf(o1.getPts())));
         
         
         System.out.println("============ LOS PUNTAJES SON: ============");
+        int posicion = 1;
         for(Puntaje pts:puntos) {
-        	System.out.println("NOMBRE:"+pts.getNombre()+"\tPUNTOS:"+pts.getPts()+"\tCANTIDAD ACIERTOS: " + pts.getCantidadAciertos() + "\tRONDAS COMPLETAS: " + pts.getCantidadRondasAcertadas() + "\tFASES COMPLETAS: " + pts.getCantidadFasesAcertadas());
+        	System.out.println("PUESTO: #" + posicion+ " NOMBRE:"+pts.getNombre()+"\tPUNTOS:"+pts.getPts()+"\tCANTIDAD ACIERTOS: " + pts.getCantidadAciertos() + "\tRONDAS COMPLETAS: " + pts.getCantidadRondasAcertadas() + "\tFASES COMPLETAS: " + pts.getCantidadFasesAcertadas());
+            posicion++;
         }
         
     }
