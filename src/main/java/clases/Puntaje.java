@@ -67,7 +67,7 @@ public class Puntaje {
                             for(Ronda ronda: listRondas) {
                                 // Agregamos un acierto a la ronda cuando obtenemos un puntaje.
                                 if(Integer.valueOf(ronda.getNro()).equals(pronostico.getPartido().getNroRonda())) {
-                                    ronda.setAciertos(ronda.getAciertos() + this.puntosAcierto);
+                                    ronda.setAciertos(ronda.getAciertos() + 1);
                                 }
                             }
                         }
