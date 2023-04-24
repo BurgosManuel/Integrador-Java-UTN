@@ -165,7 +165,7 @@ public class Pronostico {
             try (Statement pronosticoRowsStmt = con.createStatement();){
                 ResultSet pronosticoRowsRs = pronosticoRowsStmt.executeQuery("SELECT COUNT(*) FROM " + pronosticoTable);
                 while (pronosticoRowsRs.next()) {
-                    System.out.println("CANTIDAD DE FILAS PRONOSTICO: " + pronosticoRowsRs.getInt(1));
+                    //System.out.println("CANTIDAD DE FILAS PRONOSTICO: " + pronosticoRowsRs.getInt(1));
                     cantidadPronosticos = pronosticoRowsRs.getInt(1);
                 }
             } catch (SQLException e) {
