@@ -1,14 +1,11 @@
-use pronostico;
+INSERT INTO PROYECTO_UTN.PERSONA (NOMBRE_PERSONA) VALUES ("MARIANA");
+INSERT INTO PROYECTO_UTN.PERSONA (NOMBRE_PERSONA) VALUES ("PEDRO");
 
-Insert into personas (Nombre) values ("Mariana");
-Insert into personas (Nombre) values ("Pedro");
-
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Argentina","","","X","Arabia Saudita",1);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Polonia","","X","","Mexico",1);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Argentina","X","","","Mexico",1);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Arabia Saudita","","","X","Polonia",1);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Argentina","X","","","Arabia Saudita",2);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Polonia","","","X","Mexico",2);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Argentina","X","","","Mexico",2);
-Insert into Apuestas (equipo1, ganaequipo1, empate, ganaequipo2, equipo2, idPersona) values ("Arabia Saudita","","X","","Polonia",2);
- 
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (1, "ARGENTINA", "ARABIA SAUDITA", "", "", "X");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (1, "POLONIA", "MEXICO", "", "X", "");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (1, "ARGENTINA", "MEXICO", "X", "", "");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (1, "ARABIA SAUDITA", "POLONIA", "", "", "X");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (2, "ARGENTINA", "ARABIA SAUDITA", "X", "", "");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (2, "POLONIA", "ARABIA SAUDITA", "", "", "X");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (2, "ARGENTINA", "MEXICO", "X", "", "");
+INSERT INTO PROYECTO_UTN.PRONOSTICO (ID_PERSONA, EQUIPO_UNO, EQUIPO_DOS, GANA_UNO, EMPATE, GANA_DOS) VALUES (2, "ARABIA SAUDITA", "POLONIA", "X", "", "");

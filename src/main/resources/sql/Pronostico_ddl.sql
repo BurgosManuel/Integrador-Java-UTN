@@ -1,32 +1,23 @@
--- Borro bd si existe
+-- Creo BD si no existe
 
-Drop database if exists pronostico;
+CREATE DATABASE IF NOT EXISTS PROYECTO_UTN;
 
--- Creo BD
-
-create database pronostico;
-
--- Uso BD pronostico
-USE Pronostico;
-
--- Creo tabla personas
-create table Personas(
-	idPersona int NOT NULL auto_increment,
-    Nombre Char(100) not null,
-    primary key(idPersona)
+-- Creamos tabla PERSONA
+CREATE TABLE PROYECTO_UTN.PERSONA(
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOMBRE_PERSONA VARCHAR(50) NOT NULL
 );
 
--- Creo tabla Apuestas
+-- Creo tabla PRONOSTICO
 
-Create table Apuestas(
-	idApuesta int not null auto_increment,
-    equipo1 char(25) not null,
-    ganaequipo1 char(1),
-    empate char(1),
-    ganaequipo2 char(1),
-    equipo2 char(25) not null,
-    idPersona int not null,
-    Primary key(idApuesta),
-    foreign key(idPersona) references Personas (idPersona) 
+CREATE TABLE PROYECTO_UTN.PRONOSTICO(
+	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	ID_PERSONA INT NOT NULL,
+    EQUIPO_UNO VARCHAR(100) NOT NULL,
+    EQUIPO_DOS VARCHAR(100) NOT NULL,
+    GANA_UNO CHAR(1) CHECK(GANA_UNO = "X" OR GANA_UNO = ""),
+    EMPATE CHAR(1) CHECK(EMPATE = "X" OR EMPATE = ""),
+    GANA_DOS CHAR(1) CHECK(GANA_DOS = "X" OR GANA_DOS = ""),
+    FOREIGN KEY (ID_PERSONA) REFERENCES PERSONAS (ID)
 );
 

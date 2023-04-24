@@ -1,5 +1,3 @@
-use pronostico;
-
-select p.nombre,a.equipo1,a.ganaEquipo1,a.empate,a.ganaEquipo2,a.equipo2
-From Personas As p, Apuestas as a
-where p.idPersona=A.idPersona; 
+SELECT P.NOMBRE_PERSONA,PRO.EQUIPO_UNO, PRO.EQUIPO_DOS, PRO.GANA_UNO, PRO.EMPATE, PRO.GANA_DOS
+FROM PROYECTO_UTN.PERSONA AS P, PROYECTO_UTN.PRONOSTICO AS PRO
+WHERE P.ID = PRO.ID_PERSONA;
