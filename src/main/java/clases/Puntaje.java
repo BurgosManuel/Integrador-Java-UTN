@@ -17,11 +17,12 @@ public class Puntaje {
     private int puntosRondaAcertada = 1;
     private int puntosFaseAcertada = 2;
 	
-	public Puntaje(String nombre, int pts, int cantAciertos, int cantRondasAcertadas) {
+	public Puntaje(String nombre, int pts, int cantAciertos, int cantRondasAcertadas, int cantFasesAcertadas) {
 		this.nombre=nombre;
 		this.pts=pts;
 		this.cantidadAciertos=cantAciertos;
 		this.cantidadRondasAcertadas=cantRondasAcertadas;
+        this.cantidadFasesAcertadas=cantFasesAcertadas;
 	}
 
     public Puntaje(){};
@@ -88,16 +89,15 @@ public class Puntaje {
 
             if(cantidadRondasAcertadas > 0) {
                 puntaje += this.puntosRondaAcertada * cantidadRondasAcertadas;// Se suma por cantidad de rondas acertadas
-                if(cantidadRondasAcertadas > 1) {
+                if(cantidadRondasAcertadas == listRondas.size()) {
                     this.setCantidadFasesAcertadas(this.getCantidadFasesAcertadas() + 1);
-                	puntaje += this.puntosFaseAcertada;// Se suman puntos extra si se completan al menos 2 rondas completas
+                	puntaje += this.puntosFaseAcertada;// Puntos extras si acertamos en todas las rondas de esta Fase
                 }
             }
             listRondas.stream().forEach(r -> r.setAciertos(0));
             
-            Puntaje aux = new Puntaje(nombre,puntaje,cantidadAciertos,cantidadRondasAcertadas);
+            Puntaje aux = new Puntaje(nombre,puntaje,cantidadAciertos,cantidadRondasAcertadas, cantidadFasesAcertadas);
             puntos.add(aux);
-            //System.out.println(nombre + ": " + "PUNTOS: " + puntaje + " CANTIDAD ACIERTOS: " + cantidadAciertos + " RONDAS COMPLETAS: " + cantidadRondasAcertadas); // Imprimimos el nombre y puntaje por consola.
         }
 		
 		return puntos;
