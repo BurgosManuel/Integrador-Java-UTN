@@ -180,7 +180,6 @@ public class Pronostico {
 
         // Creamos la lista de pronosticos y nombres de jugadores.
         List<Pronostico> listPronosticos = new ArrayList<>();
-        List<String> listNombreJugador = new ArrayList<>();
 
         // Creamos el ResultSet para los datos de la DB
         ResultSet listPronosticoSQL = null;
@@ -197,10 +196,8 @@ public class Pronostico {
                     // Obtenemos el nombre del jugador
                     String nombreJugador = listPronosticoSQL.getString("NOMBRE_PERSONA");
 
-                    if (Objects.nonNull(nombreJugador) && !nombreJugador.isEmpty()) {
-                        listNombreJugador.add(nombreJugador);
-                    } else {
-                        throw new NullPointerException("El nombre del jugador no puede ser NULL");
+                    if (Objects.isNull(nombreJugador) || nombreJugador.isEmpty()) {
+                        throw new NullPointerException("El nombre del jugador no puede ser NULL o estar vacío.");
                     }
 
                     // Seteamos las 3 posibilidades en booleans.
