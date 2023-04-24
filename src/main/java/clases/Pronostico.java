@@ -49,24 +49,26 @@ public class Pronostico {
         List<String> listNombreJugador = new ArrayList<>();
         List<String> nombresDeEquipo = new ArrayList<>();
         List<String> pronosticoLines = new ArrayList<>();
-        Connection conexion=null;
-        if(!pronosticoFile.contains("csv")){
-        	conexion=DBManager.getInstance().conexion(pronosticoFile);
-        }
-    	try {
-    		if(conexion!=null) {
+        Connection conexion = null;
+    	
+        if(pronosticoFile.contains("csv")) {
+        	Path pronosticosPath =  Paths.get(pronosticoFile).toAbsolutePath();
+ 	        // Creamos variables de tipo File a partir de los paths.
+ 	        File URL = new File(pronosticosPath.toUri());
+ 	        pronosticoLines = Files.readAllLines(URL.toPath());
+        }else {
+        
+        try {
+    			conexion=DBManager.getInstance().conexion(pronosticoFile);
     			String sql="select p.nombre,a.equipo1,a.ganaEquipo1,a.empate,a.ganaEquipo2,a.equipo2 From Personas As p, Apuestas as a where p.idPersona=A.idPersona;";
     			PreparedStatement query = conexion.prepareStatement(sql);
     			ResultSet resulSet = query.executeQuery();
     			while(resulSet.next()) {
     				pronosticoLines.add(resulSet.getString("nombre")+";"+resulSet.getString("equipo1")+";"+resulSet.getString("ganaEquipo1")+";"+resulSet.getString("Empate")+";"+resulSet.getString("ganaEquipo2")+";"+resulSet.getString("equipo2"));
-    			}
+    			
     			}
     	}catch(SQLException a){
-    		Path pronosticosPath =  Paths.get(pronosticoFile).toAbsolutePath();
- 	        // Creamos variables de tipo File a partir de los paths.
- 	        File URL = new File(pronosticosPath.toUri());
- 	        pronosticoLines = Files.readAllLines(URL.toPath());
+    		a.printStackTrace();
     	}finally{
     		try {
 				conexion.close();
@@ -75,7 +77,7 @@ public class Pronostico {
 				e.printStackTrace();
 			}
     	}
-    	
+        }
     	
         
         // Obtenemos todos los nombres de equipo para diferenciar

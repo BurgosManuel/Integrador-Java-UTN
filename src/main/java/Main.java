@@ -30,7 +30,7 @@ public class Main {
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
         List<Pronostico> listPronostico;
     	
-    	if(args.length==0) {
+    	if(args.length!=0) {
     		String pronosticoFile="src\\main\\resources\\pronostico.csv";
 	        listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
     	}else {
