@@ -6,6 +6,8 @@ import enums.ResultadoEnum;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Partido {
@@ -30,9 +32,16 @@ public class Partido {
 
     }
 
-    public static List<Partido> buildListPartidosFromFile(File resultadosFile) throws IOException {
-        List<String> resultadosLines = Files.readAllLines(resultadosFile.toPath());
-
+    public static List<Partido> buildListPartidosFromFile(String resultadosFile) throws IOException {
+    	
+    	
+    	if(resultadosFile.contains("csv")) {
+    		Path partidosPath = Paths.get(resultadosFile).toAbsolutePath();
+    		File resultadoFile = new File(partidosPath.toUri());
+    		List<String> resultadosLines = Files.readAllLines(resultadoFile.toPath());
+    	}else {
+    		
+    	}
         List<Integer> listRondas = new ArrayList<>();
         List<Integer> listGolesEquipos = new ArrayList<>();
         List<String> listaResultadosEquipos = new ArrayList<>();

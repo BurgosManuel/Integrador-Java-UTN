@@ -7,11 +7,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.*;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         // Inicializamos un scanner para, más adelante pedir los directorios en la consola.
         //Scanner scanner = new Scanner(System.in);
 
@@ -23,24 +24,20 @@ public class Main {
 
 
         // Seteamos los absolute paths en las variables.
-        Path partidosPath = Paths.get(args[0]).toAbsolutePath();
-        //Path configurationFile = Paths.get(args[1]).toAbsolutePath();
-
-        Path pronosticosPath =  Paths.get(args[1]).toAbsolutePath();
-
-        // Creamos variables de tipo File a partir de los paths.
-        File resultadoFile = new File(partidosPath.toUri());
-        File pronosticoFile = new File(pronosticosPath.toUri());
-
+    	
         // Obtenemos la lista de partidos a partir del archivo partidos.csv
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
-        List<Pronostico> listPronostico = Pronostico.buildListPronosticoFromDB(listPartidos);
-
-        //TODO: Crear tabla con JDBC
-
-       // List<Pronostico> listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
-
-
+        List<Pronostico> listPronostico;
+    	
+    	if(args[0].contains("cvs")) {
+    		String pronosticoFile=args[0];
+	        listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
+    	}else {
+    		listPronostico  = Pronostico.buildListPronostico(args[0], listPartidos);
+    		
+    		
+    	}
+    	
         // Imprimimos por pantalla el valor de las instancias del objeto Partido.
         System.out.println("========== PARTIDOS =========");
         for(Partido p : listPartidos) {
@@ -53,7 +50,7 @@ public class Main {
             System.out.println(pro.toString());
         }
 
-        List<Puntajes> puntos = Puntajes.Puntos(listPartidos, listPronostico,1,1,2);
+        List<Puntajes> puntos = Puntajes.Puntos(listPartidos, listPronostico,Integer.parseInt(args[1]),Integer.parseInt(args[2]),Integer.parseInt(args[3]));
         
         
         System.out.println("============ LOS PUNTAJES SON: ============");

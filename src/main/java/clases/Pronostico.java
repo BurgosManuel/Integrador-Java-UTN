@@ -5,12 +5,19 @@ import enums.ResultadoEnum;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.sql.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import BaseDeDatos.DBManager;
 
 public class Pronostico {
     private Partido partido;
@@ -35,15 +42,44 @@ public class Pronostico {
         return puntaje;
     }
 
-    public static List<Pronostico> buildListPronostico(File pronosticoFile, List<Partido> listPartidos) throws IOException {
-        List<String> pronosticoLines = Files.readAllLines(pronosticoFile.toPath());
-
-        // Armamos una list que contenga las X y los espacios Vacios-
+    public static List<Pronostico> buildListPronostico(String pronosticoFile, List<Partido> listPartidos) throws IOException, SQLException {
+    	// Armamos una list que contenga las X y los espacios Vacios-
         // Tambien armamos una lista para los nombres de los jugadores.
         List<String> listPosicionX = new ArrayList<>();
         List<String> listNombreJugador = new ArrayList<>();
         List<String> nombresDeEquipo = new ArrayList<>();
-
+        List<String> pronosticoLines = new ArrayList<>();
+        Connection conexion = null;
+    	
+        if(pronosticoFile.contains("csv")) {
+        	Path pronosticosPath =  Paths.get(pronosticoFile).toAbsolutePath();
+ 	        // Creamos variables de tipo File a partir de los paths
+        	File URL = new File(pronosticosPath.toUri());
+ 	        pronosticoLines = Files.readAllLines(URL.toPath());
+        }else {
+        
+	        try {
+	    			conexion=DBManager.getInstance().conexion(pronosticoFile);
+	    			String sql="select p.nombre,a.equipo1,a.ganaEquipo1,a.empate,a.ganaEquipo2,a.equipo2 From Personas As p, Apuestas as a where p.idPersona=A.idPersona;";
+	    			PreparedStatement query = conexion.prepareStatement(sql);
+	    			ResultSet resulSet = query.executeQuery();
+	    			while(resulSet.next()) {
+	    				pronosticoLines.add(resulSet.getString("nombre")+";"+resulSet.getString("equipo1")+";"+resulSet.getString("ganaEquipo1")+";"+resulSet.getString("Empate")+";"+resulSet.getString("ganaEquipo2")+";"+resulSet.getString("equipo2"));
+	    			
+	    			}
+	    	}catch(SQLException a){
+	    		a.printStackTrace();
+	    	}finally{
+	    		try {
+					conexion.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+        }
+    	
+        
         // Obtenemos todos los nombres de equipo para diferenciar
         if(Objects.nonNull(listPartidos) && !listPartidos.isEmpty()) {
              nombresDeEquipo = listPartidos.stream()
@@ -53,7 +89,7 @@ public class Pronostico {
             throw new IOException("La lista de partidos esta vacio o es nula.");
         }
 
-
+       
         for(String pronosticoLine : pronosticoLines) {
             // Separamos los datos con coma por cada linea.
             String[] resultadoSplit = pronosticoLine.split(";");
@@ -63,7 +99,7 @@ public class Pronostico {
                     listPosicionX.add(splitDato);
                 } else {
                     // Si el dato encontrado no es un nombre de equipo, se agrega a la lista de jugadores.
-                    if(!nombresDeEquipo.contains(splitDato)) {
+                    if(! nombresDeEquipo.contains(splitDato)) {
                         listNombreJugador.add(splitDato);
                     }
                 }
@@ -144,112 +180,6 @@ public class Pronostico {
             }
 
         return  listPronosticos;
-    }
-
-    public static List<Pronostico> buildListPronosticoFromDB(List<Partido> listPartidos) {
-        // Instanciamos el DB Manager
-        DBManager dbManager = new DBManager();
-        int cantidadPronosticos = 0;
-
-        // Obtenemos la cantidad de rows que haya en la tabla
-        try {
-            Connection con = dbManager.iniciarConexion();
-
-            try (Statement pronosticoRowsStmt = con.createStatement()) {
-                ResultSet pronosticoRowsRs = pronosticoRowsStmt.executeQuery("SELECT COUNT(*) FROM INTEGRADOR_UTN.PRONOSTICO");
-                while (pronosticoRowsRs.next()) {
-                    System.out.println("CANTIDAD DE FILAS PRONOSTICO: " + pronosticoRowsRs.getInt(1));
-                    // Obtenemos la cantidad de pronosticos que hay en la tabla y le restamos 2 para obtener la cantidad correcta (como si hicieramos Array.size())
-                    cantidadPronosticos = pronosticoRowsRs.getInt(1);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            // Finalizamos la conexion
-            dbManager.finalizarConexion(con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        // Creamos la lista de pronosticos
-        List<Pronostico> listPronosticos = new ArrayList<>();
-        List<String> listNombreJugador = new ArrayList<>();
-
-        // Creamos el ResultSet para los datos de la DB
-        ResultSet listPronosticoSQL = null;
-        try {
-            Connection con = dbManager.iniciarConexion();
-
-            try(Statement statement = con.createStatement()) {
-                listPronosticoSQL  = statement.executeQuery("SELECT * FROM INTEGRADOR_UTN.PRONOSTICO");
-                int i = 0;
-                while(listPronosticoSQL != null && listPronosticoSQL.next()) {
-                    // Obtenemos el nombre del jugador
-                    String nombreJugador = listPronosticoSQL.getString("NOMBRE_JUGADOR");
-
-                    if (Objects.nonNull(nombreJugador) && !nombreJugador.isEmpty()) {
-                        listNombreJugador.add(listPronosticoSQL.getString("NOMBRE_JUGADOR"));
-                    } else {
-                        throw new NullPointerException("El nombre del jugador no puede ser NULL");
-                    }
-
-                    // Seteamos las 3 posibilidades en booleans.
-                    boolean gana1 = listPronosticoSQL.getString("GANA_UNO").equalsIgnoreCase("X");
-                    boolean empate = listPronosticoSQL.getString("EMPATE").equalsIgnoreCase("X");
-                    boolean gana2 = listPronosticoSQL.getString("GANA_DOS").equalsIgnoreCase("X");
-
-                    // Setamos un equipo y un resultado para este pronostico.
-                    Equipo equipoSeleccionado = null;
-                    ResultadoEnum resultado = null;
-
-                    // Diferenciamos los indices de los partidos de los indices de los nombres.
-                    int indicePartidos = i;
-
-                    // Regresamos al principio de la lista de partidos siempre que todavia haya pronosticos disponibles.
-                    if (indicePartidos >= listPartidos.size() && indicePartidos < cantidadPronosticos) {
-                        indicePartidos -= listPartidos.size();
-                    }
-
-                    // Obtenemos el partido actual
-                    Partido partido = null;
-
-                    try {
-                        partido = listPartidos.get(indicePartidos);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        throw new ArrayIndexOutOfBoundsException("La cantidad de pronosticos no coincide con la cantidad de partidos.");
-                    }
-
-                    i++;
-
-                    if(!empate) {
-                        if(gana1) {
-                            equipoSeleccionado = partido.getEquipo1();
-                        } else {
-                            equipoSeleccionado = partido.getEquipo2();
-                        }
-                        resultado = ResultadoEnum.GANADOR;
-                    } else {
-                        equipoSeleccionado = partido.getEquipo1();
-                        resultado = ResultadoEnum.EMPATE;
-                    }
-
-                    Pronostico pronosticoResult = new Pronostico(partido, equipoSeleccionado, resultado, nombreJugador);
-
-                    if(Objects.nonNull(pronosticoResult)){
-                        listPronosticos.add(pronosticoResult);
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            // Finalizamos la conexion
-            dbManager.finalizarConexion(con);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return listPronosticos;
     }
 
     public static int obtenerIndicePartidoPorPosX(int posicionX) {
