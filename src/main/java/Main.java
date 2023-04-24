@@ -24,19 +24,23 @@ public class Main {
 
 
         // Seteamos los absolute paths en las variables.
-    	Path partidosPath = Paths.get("src\\main\\resources\\partidos.csv").toAbsolutePath();
-    	File resultadoFile = new File(partidosPath.toUri());
+        Path partidosPath = Paths.get(args[0]).toAbsolutePath();
+
+        // Creamos variables de tipo File a partir de los paths.
+        File resultadoFile = new File(partidosPath.toUri());
+
         // Obtenemos la lista de partidos a partir del archivo partidos.csv
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
         List<Pronostico> listPronostico;
-    	
-    	if(args[0].contains("cvs")) {
-    		String pronosticoFile=args[0];
+
+        // Validamos si el segundo argumento es un archivo .csv o es un archivo de configuración, en base a eso obtenemos la lista de pronósticos.
+    	if(args[1].contains(".csv")) {
+            Path pronosticosPath =  Paths.get(args[1]).toAbsolutePath();
+            File pronosticoFile = new File(pronosticosPath.toUri());
 	        listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
     	}else {
-    		listPronostico  = Pronostico.buildListPronostico(args[0], listPartidos);
-    		
-    		
+            //TODO: Configurar conexion a DB y puntaje.
+    		listPronostico  = Pronostico.buildListPronosticoFromDB(listPartidos);
     	}
     	
         // Imprimimos por pantalla el valor de las instancias del objeto Partido.
@@ -51,7 +55,7 @@ public class Main {
             System.out.println(pro.toString());
         }
 
-        List<Puntajes> puntos = Puntajes.Puntos(listPartidos, listPronostico,Integer.parseInt(args[1]),Integer.parseInt(args[2]),Integer.parseInt(args[3]));
+        List<Puntajes> puntos = Puntajes.Puntos(listPartidos, listPronostico,1,1,2);
         
         
         System.out.println("============ LOS PUNTAJES SON: ============");
