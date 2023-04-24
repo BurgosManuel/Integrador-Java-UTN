@@ -56,14 +56,14 @@ public class PuntajeTest {
 	@DisplayName ("Probando la suma del extra por fase")
 	@Test
 	public void test3()throws IOException{
-		int esperado=16;
+		int esperado=14;
 		
 		Path arch3= Paths.get(new File ("src\\test\\resources\\PartidosTest2.csv").getAbsolutePath());
 		Path arch4=Paths.get(new File ("src\\test\\resources\\PronosticoTest2.csv").getAbsolutePath());
 		resulPartidos2 = Partido.buildListPartidosFromFile(new File (arch3.toUri()));
 		resulPronosticos2 = Pronostico.buildListPronostico(new File (arch4.toUri()), resulPartidos2);
 		
-		pts2= this.puntajeUtilidad.puntos(resulPartidos, resulPronosticos);
+		pts2= this.puntajeUtilidad.puntos(resulPartidos2, resulPronosticos2);
 		
 		for(Puntaje puntos: pts2) {
 			Assertions.assertEquals(esperado,puntos.getPts());
