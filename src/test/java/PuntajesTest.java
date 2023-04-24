@@ -18,7 +18,7 @@ public class PuntajesTest {
 	private List<Partido> resulPartidos,resulPartidos2;
 	private List<Pronostico> resulPronosticos,resulPronosticos2;
 	private List<Puntajes> pts, pts2;
-	
+
 	@BeforeEach
 	public void setup() throws IOException {
 		Path arch= Paths.get(new File ("src\\test\\resources\\PartidosTest.csv").getAbsolutePath()); 
@@ -30,32 +30,32 @@ public class PuntajesTest {
 	}
 	
 	
-//	@DisplayName ("Puntaje de una persona en 2 rondas consecutivas")
-//	@Test 
-//	public void Test1() throws IOException {
-//		int esperado=7;		
-//		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
-//		
-//		for(Puntajes puntos: pts) {
-//			Assertions.assertEquals(esperado,puntos.getPts());
-//		}
-//	}
-//	
-//	@DisplayName ("Nombre de persona correcto")
-//	@Test
-//	public void test2()throws IOException{
-//		String esperado="MARIANA";		
-//		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
-//		
-//		for(Puntajes puntos: pts) {
-//			Assertions.assertEquals(esperado,puntos.getNombre());
-//		}
-//	}
+	@DisplayName ("Puntaje de una persona en 2 rondas consecutivas")
+	@Test
+	public void Test1() throws IOException {
+		int esperado=7;
+		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
+
+		for(Puntajes puntos: pts) {
+			Assertions.assertEquals(esperado,puntos.getPts());
+		}
+	}
+
+	@DisplayName ("Nombre de persona correcto")
+	@Test
+	public void test2()throws IOException{
+		String esperado="MARIANA";
+		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
+
+		for(Puntajes puntos: pts) {
+			Assertions.assertEquals(esperado,puntos.getNombre());
+		}
+	}
 	
 	@DisplayName ("Probando la suma del extra por fase")
 	@Test
 	public void test3()throws IOException{
-		int esperado=15;
+		int esperado=16;
 		
 		Path arch3= Paths.get(new File ("src\\test\\resources\\PartidosTest2.csv").getAbsolutePath());
 		Path arch4=Paths.get(new File ("src\\test\\resources\\PronosticoTest2.csv").getAbsolutePath());

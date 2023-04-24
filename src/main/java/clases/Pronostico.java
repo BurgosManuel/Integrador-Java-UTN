@@ -148,10 +148,14 @@ public class Pronostico {
     public static int obtenerIndicePartidoPorPosX(int posicionX) {
         // 3 posiciones de X == 1 partido. Vamos restando de a 3 posiciones para encontrar el lugar de cada partido.
         int indicePartido = 0;
-        while (posicionX - 3 > indicePartido && posicionX > 3) {
-            posicionX -= 3;
-            indicePartido++;
+        //Obtenemos el indice del resultado, no del siguiente valor.
+        if(posicionX > 3) {
+            while (posicionX - 3 > indicePartido) {
+                indicePartido++;
+                posicionX -= 2;
+            };
         }
+
         return indicePartido;
     }
 
