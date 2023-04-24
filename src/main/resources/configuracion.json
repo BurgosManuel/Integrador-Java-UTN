@@ -1,0 +1,9 @@
+{
+  "dbUrl": "jdbc:mysql://bzfr6hutfpue9340vlj8-mysql.services.clever-cloud.com:3306/",
+  "dbName": "bzfr6hutfpue9340vlj8",
+  "username": "ua4ttdzklhqkwylu",
+  "password": "iuPpq9MjL4czoe6UnwH0",
+  "puntosAcierto": 1,
+  "puntosRondaAcertada": 1,
+  "puntosFaseAcertada": 2
+}

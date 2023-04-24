@@ -1,5 +1,7 @@
 package db;
 
+import clases.Configuracion;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,10 +9,10 @@ import java.util.Objects;
 
 public class DBManager {
 	// Usamos datos de DB en Clever Cloud por defecto.
-	private String DB_NAME="bzfr6hutfpue9340vlj8";
-	private String DB_USERNAME="ua4ttdzklhqkwylu";
-	private String DB_PASSWORD="iuPpq9MjL4czoe6UnwH0";
-	private String DB_URL="jdbc:mysql://bzfr6hutfpue9340vlj8-mysql.services.clever-cloud.com:3306/" + this.DB_NAME;
+	private String DB_NAME;
+	private String DB_USERNAME;
+	private String DB_PASSWORD;
+	private String DB_URL;
 
 	private static DBManager instance = null;
 
@@ -38,6 +40,15 @@ public class DBManager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void updateDataByConfiguration(Configuracion config) {
+		if(Objects.nonNull(config)) {
+			this.DB_NAME = config.getDbName();
+			this.DB_URL = config.getDbUrl() + config.getDbName();
+			this.DB_USERNAME = config.getUsername();
+			this.DB_PASSWORD = config.getPassword();
 		}
 	}
 

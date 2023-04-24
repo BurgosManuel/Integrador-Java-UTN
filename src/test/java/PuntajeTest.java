@@ -11,13 +11,14 @@ import org.junit.jupiter.api.Test;
 
 import clases.Partido;
 import clases.Pronostico;
-import clases.Puntajes;
+import clases.Puntaje;
 
-public class PuntajesTest {
+public class PuntajeTest {
 	
 	private List<Partido> resulPartidos,resulPartidos2;
 	private List<Pronostico> resulPronosticos,resulPronosticos2;
-	private List<Puntajes> pts, pts2;
+	private List<Puntaje> pts, pts2;
+	private Puntaje puntajeUtilidad = new Puntaje();
 
 	@BeforeEach
 	public void setup() throws IOException {
@@ -34,9 +35,9 @@ public class PuntajesTest {
 	@Test
 	public void Test1() throws IOException {
 		int esperado=7;
-		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
+		pts= this.puntajeUtilidad.puntos(resulPartidos, resulPronosticos);
 
-		for(Puntajes puntos: pts) {
+		for(Puntaje puntos: pts) {
 			Assertions.assertEquals(esperado,puntos.getPts());
 		}
 	}
@@ -45,9 +46,9 @@ public class PuntajesTest {
 	@Test
 	public void test2()throws IOException{
 		String esperado="MARIANA";
-		pts=Puntajes.Puntos(resulPartidos, resulPronosticos, 1, 1, 2);
+		pts= this.puntajeUtilidad.puntos(resulPartidos, resulPronosticos);
 
-		for(Puntajes puntos: pts) {
+		for(Puntaje puntos: pts) {
 			Assertions.assertEquals(esperado,puntos.getNombre());
 		}
 	}
@@ -62,9 +63,9 @@ public class PuntajesTest {
 		resulPartidos2 = Partido.buildListPartidosFromFile(new File (arch3.toUri()));
 		resulPronosticos2 = Pronostico.buildListPronostico(new File (arch4.toUri()), resulPartidos2);
 		
-		pts2=Puntajes.Puntos(resulPartidos2, resulPronosticos2, 1, 1, 2);
+		pts2= this.puntajeUtilidad.puntos(resulPartidos, resulPronosticos);
 		
-		for(Puntajes puntos: pts2) {
+		for(Puntaje puntos: pts2) {
 			Assertions.assertEquals(esperado,puntos.getPts());
 		}
 	}

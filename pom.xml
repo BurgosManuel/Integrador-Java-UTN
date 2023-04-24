@@ -23,6 +23,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.28</version>
 		</dependency>
+		<!-- Dependencia para usar Jackson, ObjectMapper, Anotations, etc.-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
