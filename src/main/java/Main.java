@@ -30,8 +30,8 @@ public class Main {
         List<Partido> listPartidos = Partido.buildListPartidosFromFile(resultadoFile);
         List<Pronostico> listPronostico;
     	
-    	if(args.length==0) {
-    		String pronosticoFile="src\\main\\resources\\pronostico.csv";
+    	if(args[0].contains("cvs")) {
+    		String pronosticoFile=args[0];
 	        listPronostico = Pronostico.buildListPronostico(pronosticoFile, listPartidos);
     	}else {
     		listPronostico  = Pronostico.buildListPronostico(args[0], listPartidos);
@@ -51,7 +51,7 @@ public class Main {
             System.out.println(pro.toString());
         }
 
-        List<Puntajes> puntos = Puntajes.Puntos(listPartidos, listPronostico,1,1,2);
+        List<Puntajes> puntos = Puntajes.Puntos(listPartidos, listPronostico,Integer.parseInt(args[1]),Integer.parseInt(args[2]),Integer.parseInt(args[3]));
         
         
         System.out.println("============ LOS PUNTAJES SON: ============");
