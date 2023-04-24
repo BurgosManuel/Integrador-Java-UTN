@@ -1,61 +1,33 @@
 package clases;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class Puntajes {
+public class Puntaje {
 	
 	private String nombre;
 	private int pts;
 	private int cantidadAciertos;
 	private int cantidadRondasAcertadas;
+    private int cantidadFasesAcertadas;
+
+    private int puntosAcierto = 1;
+    private int puntosRondaAcertada = 1;
+    private int puntosFaseAcertada = 2;
 	
-	public Puntajes(String nombre,int pts,int cantAciertos,int cantRondasAcertadas) {
+	public Puntaje(String nombre, int pts, int cantAciertos, int cantRondasAcertadas) {
 		this.nombre=nombre;
 		this.pts=pts;
 		this.cantidadAciertos=cantAciertos;
 		this.cantidadRondasAcertadas=cantRondasAcertadas;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
+    public Puntaje(){};
 
-	public int getCantidadAciertos() {
-		return cantidadAciertos;
-	}
-
-	public void setCantidadAciertos(int cantidadAciertos) {
-		this.cantidadAciertos = cantidadAciertos;
-	}
-
-	public int getCantidadRondasAcertadas() {
-		return cantidadRondasAcertadas;
-	}
-
-	public void setCantidadRondasAcertadas(int cantidadRondasAcertadas) {
-		this.cantidadRondasAcertadas = cantidadRondasAcertadas;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public int getPts() {
-		return pts;
-	}
-
-	public void setPts(int pts) {
-		this.pts = pts;
-	}
-
-	public static List<Puntajes> Puntos(List<Partido> listPartidos,List<Pronostico> listPronostico,int ptsPorAcierto,int ptsExtraRonda,int ptsExtraFase) {
-		List<Puntajes> puntos = new ArrayList<>();
+	public List<Puntaje> puntos(List<Partido> listPartidos, List<Pronostico> listPronostico) {
+		List<Puntaje> puntos = new ArrayList<>();
 		
 		// Armamos un set para no tener repetidos los nombres.
         Set<String> setNombres = new HashSet<>(listPronostico.stream()
@@ -94,7 +66,7 @@ public class Puntajes {
                             for(Ronda ronda: listRondas) {
                                 // Agregamos un acierto a la ronda cuando obtenemos un puntaje.
                                 if(Integer.valueOf(ronda.getNro()).equals(pronostico.getPartido().getNroRonda())) {
-                                    ronda.setAciertos(ronda.getAciertos() +ptsPorAcierto);
+                                    ronda.setAciertos(ronda.getAciertos() + this.puntosAcierto);
                                 }
                             }
                         }
@@ -115,14 +87,15 @@ public class Puntajes {
             }
 
             if(cantidadRondasAcertadas > 0) {
-                puntaje += ptsExtraRonda * cantidadRondasAcertadas;//se suma x por ronda acertada
+                puntaje += this.puntosRondaAcertada * cantidadRondasAcertadas;// Se suma por cantidad de rondas acertadas
                 if(cantidadRondasAcertadas > 1) {
-                	puntaje += ptsExtraFase;//se suma x si completa una fase acertada
+                    this.setCantidadFasesAcertadas(this.getCantidadFasesAcertadas() + 1);
+                	puntaje += this.puntosFaseAcertada;// Se suman puntos extra si se completan al menos 2 rondas completas
                 }
             }
             listRondas.stream().forEach(r -> r.setAciertos(0));
             
-            Puntajes aux = new Puntajes(nombre,puntaje,cantidadAciertos,cantidadRondasAcertadas);            
+            Puntaje aux = new Puntaje(nombre,puntaje,cantidadAciertos,cantidadRondasAcertadas);
             puntos.add(aux);
             //System.out.println(nombre + ": " + "PUNTOS: " + puntaje + " CANTIDAD ACIERTOS: " + cantidadAciertos + " RONDAS COMPLETAS: " + cantidadRondasAcertadas); // Imprimimos el nombre y puntaje por consola.
         }
@@ -130,4 +103,75 @@ public class Puntajes {
 		return puntos;
 	}
 
+    public void updatePuntajesByConfiguration(Configuracion configuracion) {
+        if(Objects.nonNull(configuracion)) {
+            this.puntosAcierto = configuracion.getPuntosAcierto();
+            this.puntosRondaAcertada = configuracion.getPuntosRondaAcertada();
+            this.puntosFaseAcertada = configuracion.getPuntosFaseAcertada();
+        }
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getCantidadAciertos() {
+        return cantidadAciertos;
+    }
+
+    public void setCantidadAciertos(int cantidadAciertos) {
+        this.cantidadAciertos = cantidadAciertos;
+    }
+
+    public int getCantidadRondasAcertadas() {
+        return cantidadRondasAcertadas;
+    }
+
+    public void setCantidadRondasAcertadas(int cantidadRondasAcertadas) {
+        this.cantidadRondasAcertadas = cantidadRondasAcertadas;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getPts() {
+        return pts;
+    }
+
+    public void setPts(int pts) {
+        this.pts = pts;
+    }
+
+    public int getPuntosAcierto() {
+        return puntosAcierto;
+    }
+
+    public void setPuntosAcierto(int puntosAcierto) {
+        this.puntosAcierto = puntosAcierto;
+    }
+
+    public int getPuntosRondaAcertada() {
+        return puntosRondaAcertada;
+    }
+
+    public void setPuntosRondaAcertada(int puntosRondaAcertada) {
+        this.puntosRondaAcertada = puntosRondaAcertada;
+    }
+
+    public int getPuntosFaseAcertada() {
+        return puntosFaseAcertada;
+    }
+
+    public void setPuntosFaseAcertada(int puntosFaseAcertada) {
+        this.puntosFaseAcertada = puntosFaseAcertada;
+    }
+
+    public int getCantidadFasesAcertadas() {
+        return cantidadFasesAcertadas;
+    }
+
+    public void setCantidadFasesAcertadas(int cantidadFasesAcertadas) {
+        this.cantidadFasesAcertadas = cantidadFasesAcertadas;
+    }
 }
