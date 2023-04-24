@@ -1,12 +1,15 @@
-package BaseDeDatos;
+package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Objects;
 
 public class DBManager {
-	
-	private String DB_USERNAME="root";
-	private String DB_PASSWORD="31928264As";
+	// Usamos DB en la nube por defecto.
+	private String DB_USERNAME="ua4ttdzklhqkwylu";
+	private String DB_PASSWORD="iuPpq9MjL4czoe6UnwH0";
+	private String DB_URL="jdbc:mysql://bzfr6hutfpue9340vlj8-mysql.services.clever-cloud.com:3306/bzfr6hutfpue9340vlj8";
 	
 	private static DBManager instance = null;
 	
@@ -21,18 +24,33 @@ public class DBManager {
 		
 		return instance;
 	}
-	
-	public Connection conexion(String DB_URL) {
-		Connection connection=null;
-		
-		try {
-			connection= DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);//conecta la BD
-			connection.setAutoCommit(false);//Apaga la actualizacion automatica			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return connection;
+
+	public Connection conexion() throws SQLException {
+		return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 	}
 
+	public void finalizarConexion(Connection conexion) {
+		if(Objects.nonNull(conexion)) {
+			try{
+				conexion.close();
+				conexion = null;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// Generamos unicamente los setters para evitar acceder a los valores de los datos.
+
+	public void setDB_USERNAME(String DB_USERNAME) {
+		this.DB_USERNAME = DB_USERNAME;
+	}
+
+	public void setDB_PASSWORD(String DB_PASSWORD) {
+		this.DB_PASSWORD = DB_PASSWORD;
+	}
+
+	public void setDB_URL(String DB_URL) {
+		this.DB_URL = DB_URL;
+	}
 }
