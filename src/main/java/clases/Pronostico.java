@@ -166,7 +166,6 @@ public class Pronostico {
                 ResultSet pronosticoRowsRs = pronosticoRowsStmt.executeQuery("SELECT COUNT(*) FROM " + pronosticoTable);
                 while (pronosticoRowsRs.next()) {
                     System.out.println("CANTIDAD DE FILAS PRONOSTICO: " + pronosticoRowsRs.getInt(1));
-                    // Obtenemos la cantidad de pronosticos que hay en la tabla y le restamos 2 para obtener la cantidad correcta (como si hicieramos Array.size())
                     cantidadPronosticos = pronosticoRowsRs.getInt(1);
                 }
             } catch (SQLException e) {
@@ -181,7 +180,6 @@ public class Pronostico {
 
         // Creamos la lista de pronosticos y nombres de jugadores.
         List<Pronostico> listPronosticos = new ArrayList<>();
-        List<String> listNombreJugador = new ArrayList<>();
 
         // Creamos el ResultSet para los datos de la DB
         ResultSet listPronosticoSQL = null;
@@ -198,10 +196,8 @@ public class Pronostico {
                     // Obtenemos el nombre del jugador
                     String nombreJugador = listPronosticoSQL.getString("NOMBRE_PERSONA");
 
-                    if (Objects.nonNull(nombreJugador) && !nombreJugador.isEmpty()) {
-                        listNombreJugador.add(nombreJugador);
-                    } else {
-                        throw new NullPointerException("El nombre del jugador no puede ser NULL");
+                    if (Objects.isNull(nombreJugador) || nombreJugador.isEmpty()) {
+                        throw new NullPointerException("El nombre del jugador no puede ser NULL o estar vacío.");
                     }
 
                     // Seteamos las 3 posibilidades en booleans.
