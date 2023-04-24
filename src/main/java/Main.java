@@ -89,7 +89,7 @@ public class Main {
         
         System.out.println("============ LOS PUNTAJES SON: ============");
         for(Puntaje pts:puntos) {
-        	System.out.println("Nombre:"+pts.getNombre()+"\tPuntos:"+pts.getPts()+"\tCANTIDAD ACIERTOS: " + pts.getCantidadAciertos() + "\tRONDAS COMPLETAS: " + pts.getCantidadRondasAcertadas() + "\tFASES COMPLETAS: " + pts.getCantidadFasesAcertadas());
+        	System.out.println("NOMBRE:"+pts.getNombre()+"\tPUNTOS:"+pts.getPts()+"\tCANTIDAD ACIERTOS: " + pts.getCantidadAciertos() + "\tRONDAS COMPLETAS: " + pts.getCantidadRondasAcertadas() + "\tFASES COMPLETAS: " + pts.getCantidadFasesAcertadas());
         }
         
     }
