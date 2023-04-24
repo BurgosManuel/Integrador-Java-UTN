@@ -6,22 +6,23 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class DBManager {
-	// Usamos DB en la nube por defecto.
+	// Usamos datos de DB en Clever Cloud por defecto.
+	private String DB_NAME="bzfr6hutfpue9340vlj8";
 	private String DB_USERNAME="ua4ttdzklhqkwylu";
 	private String DB_PASSWORD="iuPpq9MjL4czoe6UnwH0";
-	private String DB_URL="jdbc:mysql://bzfr6hutfpue9340vlj8-mysql.services.clever-cloud.com:3306/bzfr6hutfpue9340vlj8";
-	
+	private String DB_URL="jdbc:mysql://bzfr6hutfpue9340vlj8-mysql.services.clever-cloud.com:3306/" + this.DB_NAME;
+
 	private static DBManager instance = null;
-	
-	
+
+
 	private DBManager() { // Es privada para que solo se pueda hacer una instancia de DBManager--- El punto es no poder hacer mas de una conexion en el programa
 	}
-	
+
 	public static DBManager getInstance() {
 		if(instance==null) {
 			instance=new DBManager();//si la variable es nula devuelve una nueva instancia // si no, devuelve la instancia anterior
 		}
-		
+
 		return instance;
 	}
 
@@ -52,5 +53,13 @@ public class DBManager {
 
 	public void setDB_URL(String DB_URL) {
 		this.DB_URL = DB_URL;
+	}
+
+	public String getDB_NAME() {
+		return DB_NAME;
+	}
+
+	public void setDB_NAME(String DB_NAME) {
+		this.DB_NAME = DB_NAME;
 	}
 }
