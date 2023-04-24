@@ -94,9 +94,12 @@ public class Puntaje {
                 	puntaje += this.puntosFaseAcertada;// Puntos extras si acertamos en todas las rondas de esta Fase
                 }
             }
-            listRondas.stream().forEach(r -> r.setAciertos(0));
-            
             Puntaje aux = new Puntaje(nombre,puntaje,cantidadAciertos,cantidadRondasAcertadas, cantidadFasesAcertadas);
+
+            // Reseteamos los valores
+            listRondas.stream().forEach(r -> r.setAciertos(0));
+            this.setCantidadFasesAcertadas(0);
+
             puntos.add(aux);
         }
 		
