@@ -39,4 +39,4 @@ importar los goles ni la estructura del torneo (si es grupo, eliminatoria u otro
 4. Ejecutar el programa.
 
 Ejemplo de resultado:
-![alt text](https://i.imgur.com/beBxjS2.png)
+![Ejemplo resultado](https://i.imgur.com/Jcw7T8n.jpg)
